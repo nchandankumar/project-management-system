@@ -1,0 +1,203 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+
+{% block breadcrumb %}
+<li class="breadcrumb-item">Home</li>
+<li class="breadcrumb-item">Projects</li>
+<li class="breadcrumb-item active">Views</li>
+{% endblock breadcrumb%}
+{% block content %}
+<div class="col-md-12">
+    <div class="card">
+        <div class="card-header">
+            <strong>{{ tasks.count }} Active Tasks</strong>
+        </div>
+        <div class="card-body">
+            <div class="row">
+
+                <div class="col-sm-8">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="callout callout-dark">
+                                <small class="text-muted">Tasks</small>
+                                <br>
+                                <strong class="h4">{{ tasks.count }}</strong>
+                                <div class="chart-wrapper">
+                                    <div class="chartjs-size-monitor"
+                                        style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;">
+                                        <div class="chartjs-size-monitor-expand"
+                                            style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;">
+                                            <div
+                                                style="position:absolute;width:1000000px;height:1000000px;left:0;top:0">
+                                            </div>
+                                        </div>
+                                        <div class="chartjs-size-monitor-shrink"
+                                            style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;">
+                                            <div style="position:absolute;width:200%;height:200%;left:0; top:0"></div>
+                                        </div>
+                                    </div>
+                                    <canvas id="sparkline-chart-3" width="86" height="25" class="chartjs-render-monitor"
+                                        style="display: block; width: 86px; height: 25px;"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="callout callout-danger">
+                                <small class="text-muted">Overdue Tasks </small>
+                                <br>
+                                <strong class="h4">{{ overdue_tasks.count }}</strong>
+                                <div class="chart-wrapper">
+                                    <div class="chartjs-size-monitor"
+                                        style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;">
+                                        <div class="chartjs-size-monitor-expand"
+                                            style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;">
+                                            <div
+                                                style="position:absolute;width:1000000px;height:1000000px;left:0;top:0">
+                                            </div>
+                                        </div>
+                                        <div class="chartjs-size-monitor-shrink"
+                                            style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;">
+                                            <div style="position:absolute;width:200%;height:200%;left:0; top:0"></div>
+                                        </div>
+                                    </div>
+                                    <canvas id="sparkline-chart-4" width="86" height="25" class="chartjs-render-monitor"
+                                        style="display: block; width: 86px; height: 25px;"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <hr class="mt-0">
+                    <!-- <ul class="horizontal-bars type-2">
+                        <h4>Projects Status</h4>
+                        <li>
+                        <i class="fa fa-percent"></i>
+                        <span class="title">Projects</span>
+                        <span class="value">{{ avg_projects|floatformat }}%</span>
+                        <div class="bars">
+                            <div class="progress progress-xs">
+                                <div class="progress-bar bg-warning" role="progressbar" style="width: {{ avg_projects|floatformat }}%" aria-valuenow="43" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                    </li>
+                        <li class="divider"></li>
+                        {% for project in projects %}
+                        <li class="my-2">
+                            {% if project.status == '1' %}
+                            <span class="badge badge-danger" style="width: 50px;">Stuck</span>
+                            {% elif project.status == '2' %}
+                            <span class="badge badge-info" style="width: 50px;">Working</span>
+                            {% else %}
+                            <span class="badge badge-success" style="width: 50px;">Done!</span>
+                            {% endif %}
+                            <a href="#" style="text-decoration: none;"><span class="title ml-1">{{ project }}</span></a>
+
+                            <span class="value"> <span class="text-muted small">deadline: </span>{{ project.dead_line }}
+                                <span class="text-muted small">({{ project.complete_per }}%)</span>
+                            </span>
+                            <div class="bars">
+                                <div class="progress progress-xs">
+                                    <div class="progress-bar bg-success" role="progressbar"
+                                        style="width: {{ project.complete_per }}%"
+                                        aria-valuenow="{{ project.complete_per }}" aria-valuemin="0"
+                                        aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul> -->
+                </div>
+
+            </div>
+
+            <br>
+            <div class="col-sm-12">
+                {% for project in projects %}
+                <h4>Your Tasks for {{ project }} project</h4>
+                <ul class="horizontal-bars type-2">
+                    <li class="my-2">
+                        {% if project.status == '1' %}
+                        <span class="badge badge-danger" style="width: 50px;">Stuck</span>
+                        {% elif project.status == '2' %}
+                        <span class="badge badge-info" style="width: 50px;">Working</span>
+                        {% else %}
+                        <span class="badge badge-success" style="width: 50px;">Done!</span>
+                        {% endif %}
+                        <span class="title ml-1">{{ project }}</span>
+
+                        <span class="value"> <span class="text-muted small">deadline: </span>{{ project.dead_line }}
+                            <span class="text-muted small">({{ project.complete_per }}%)</span>
+                        </span>
+                        <div class="bars">
+                            <div class="progress progress-xs">
+                                <div class="progress-bar bg-success" role="progressbar"
+                                    style="width: {{ project.complete_per }}%"
+                                    aria-valuenow="{{ project.complete_per }}" aria-valuemin="0"
+                                    aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            
+                {% if tasks|length == 0 %}
+            
+                <div class="alert alert-dark" role="alert">
+                    No Tasks found!
+                </div>
+                {% else %}
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Task Name</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Due</th>
+                            <th scope="col">Project</th>
+                            <th scope="col">No of members assigned</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+            
+                    <tbody>
+                        {% for task in tasks %}
+                        {% if task.project == project %}
+                        <tr>
+                            <td>{{task.task_name}}</td>
+                            {% if task.status == '1' %}
+                            <td>Stuck</td>
+                            {% elif task.status == '2'%}
+                            <td>Working</td>
+                            {% else %}
+                            <td>Done</td>
+                            {% endif%}
+                            {% if task.due == '1' %}
+                            <td>on due</td>
+                            {% elif task.due == '2'%}
+                            <td>Overdue</td>
+                            {% else %}
+                            <td>Done</td>
+                            {% endif%}
+                            <td>{{task.project}}</td>
+                            <td>{{task.assign.count}}</td>
+                            <td>
+                                <a href='{% url "projects:edit_task" task_id=task.id %}' type="button" class="btn btn-outline-dark btn-sm mx-1">Update</button>
+                                <a href='{% url "projects:delete_task" task_id=task.id %}' type="button" class="btn btn-outline-dark btn-sm mx-1">Delete</button>
+                                <a href='{% url "projects:form_view"  task_id=task.id  %}' type="button" class="btn btn-outline-dark btn-sm mx-1 ">Time calculator</a>
+                            </td>
+                        </tr>
+                        {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% endif %}
+                {% endfor %}
+            </div>
+
+        </div>
+
+    </div>
+</div>
+{% endblock %}

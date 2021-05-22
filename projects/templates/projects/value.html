@@ -1,0 +1,37 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+
+{% block breadcrumb %}
+<li class="breadcrumb-item">Home</li>
+<li class="breadcrumb-item">Calculator</li>
+<li class="breadcrumb-item active">Project Estimated Time Calculator</li>
+{% endblock breadcrumb%}
+{% block content %}
+<div class="col-md-12">
+    <div class="card">
+        <div class="card-header">
+            <strong>Project Estimated Time Calculator</strong>
+        </div>
+        <div class="card-body">
+            <div class="col-sm-12">
+                <div class="text-center">
+                    <form method="POST" enctype="multipart/form-data">
+                        {{ formset.management_data }}
+                        {% csrf_token %}
+                        {{ formset.as_p }}
+                        <input type="submit" value="Submit">
+                    </form>
+                    {% for key, value in d.items %}
+                    <h5>Efficiency of user {{key}} : {{value}}</h5>
+                    {% endfor %}
+                    
+
+                    <h4>Estimated Time For Completion Of Project: {{ans}} Days</h4>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
